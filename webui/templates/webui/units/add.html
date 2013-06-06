@@ -1,0 +1,30 @@
+{% extends 'common/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Units | Add' %}{% endblock %}
+
+{% block content %}
+            <div class="unit-add">
+                {% if error %}
+                    <div class="alert alert-error">{% trans error %}</div>
+                {% endif %}
+                <form action="/units/add.html" method="post">
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <label class="control-label" for="inputName">{% trans 'Unit name' %}</label>
+                        <div class="controls">
+                            <input type="text" name="name" id="inputName" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputIMEI">{% trans 'Unit IMEI' %}</label>
+                        <div class="controls">
+                            <input type="text" name="imei" id="inputIMEI" placeholder="IMEI">
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <button type="submit" class="btn">{% trans 'Add' %}</button>
+                    </div>
+                </form>
+            </div>
+{% endblock %}
