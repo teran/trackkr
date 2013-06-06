@@ -53,6 +53,38 @@ def log_out(request):
 
 
 @login_required
+def unit_add(request):
+    if request.method == 'POST':
+        try:
+            nexturl = request.GET['next']
+        except:
+            nexturl = '/'
+        try:
+            name = request.POST['name']
+            imei = request.POST['imei']
+
+            if name == '' or imei == '':
+                raise
+        except:
+            return render_to_response('webui/units/add.html',
+                                      {'error': 'The both of name and IMEI fields are required'},
+                                      context_instance=RequestContext(request))
+
+        try:
+            unit = Unit.objects.get_or_create(name=name, imei=imei)[0]
+            unit.user.add(request.user)
+            unit.save()
+            return redirect(nexturl)
+        except:
+            return render_to_response('webui/units/add.html',
+                                      {'error': 'Error saving the unit'},
+                                      context_instance=RequestContext(request))
+
+    return render_to_response('webui/units/add.html',
+                              {},
+                              context_instance=RequestContext(request))
+
+
 def units(request):
     return render_to_response('webui/units.html',
                               {},
