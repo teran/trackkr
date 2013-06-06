@@ -1,0 +1,183 @@
+#!/usr/bin/env python
+
+import logging
+import os
+import re
+import signal
+import SocketServer
+import sys
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "trackkr.settings")
+
+from core.models import Unit, Message
+from django.conf import settings
+
+logger = logging.getLogger('trackkrd')
+hdlr = logging.FileHandler(settings.DAEMON_LOG)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr) 
+logger.setLevel(logging.DEBUG)
+
+
+class GPSRequestHandler(SocketServer.BaseRequestHandler):
+    def handle(self):
+        while 1:
+            self.data = self.request.recv(1024).strip()
+            self.client = '%s:%s' % (self.client_address[0], self.client_address[1])
+
+            if self.data and len(self.data) > 0:
+                logger.debug('%s > %s' % (self.client, self.data))
+            else:
+                try:
+                    self.request.close()
+                except:
+                    pass
+
+            # Regex'es
+            re_logon = re.compile('^##,imei:(?P<imei>[0-9]{15}),([A-Z]{1});$')
+            re_heartbeat = re.compile('^(?P<imei>[0-9]{15});$')
+            re_low_battery = re.compile('^imei:(?P<imei>[0-9]{15}),low battery,([0-9]+),,(?P<gps_signal>[LF]+),(([0-9\.]*),([A]*),(?P<latitude>[0-9\.]*),(?P<latitude_zoning>[NS]{1}),(?P<longitude>[0-9\.]+),(?P<longitude_zoning>[EW]{1}),([0-9]{1}),([0-9]{1})|,,([0-9a-f]{4}),,([0-9a-f]{4}),,,);$')
+            re_sos = re.compile('^imei:(?P<imei>[0-9]{15}),help me,([0-9]+),,(?P<gps_signal>[LF]+),(([0-9\.]*),([A]*),(?P<latitude>[0-9\.]*),(?P<latitude_zoning>[NS]{1}),(?P<longitude>[0-9\.]+),(?P<longitude_zoning>[EW]{1}),([0-9]{1}),([0-9]{1})|,,([0-9a-f]{4}),,([0-9a-f]{4}),,,);$')
+            re_tracker = re.compile('^imei:(?P<imei>[0-9]{15}),tracker,([0-9]+),(?P<adminphone>[0-9\+]+),(?P<gpssignal>[LF]{1}),(([0-9\.]+),A,(?P<latitude>[0-9\.]+),(?P<latitude_zoning>[NS]{1}),(?P<longitude>[0-9\.]+),(?P<longitude_zoning>[EW]{1}),([0-9\.]+),([0-9]+)|,,([0-9a-f]+),,([0-9a-f]+),,,);$')
+
+            if(re_logon.search(self.data)):
+                self.logon(re_logon.search(self.data).groupdict())
+            elif(re_heartbeat.search(self.data)):
+                self.heartbeat(re_heartbeat.match(self.data).groupdict())
+            elif(re_low_battery.search(self.data)):
+                self.low_battery()
+            elif(re_sos.search(self.data)):
+                self.sos(re_sos.search(self.data).groupdict())
+            elif(re_tracker.search(self.data)):
+                self.tracker(re_tracker.search(self.data).groupdict())
+            else:
+                self.unknown()
+
+    def logon(self, data):
+        logger.info('%s logon message accepted: IMEI=%s' % (self.client, data['imei']))
+        try:
+            u = Unit.objects.get(imei = data['imei'])
+        except:
+            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            self.reply('NOAUTH')
+            return
+
+        m = Message(
+            latitude = None,
+            longitude = None,
+            message_type = 1,
+            unit = u
+            )
+        m.save()
+        self.reply('LOAD')
+
+    def heartbeat(self, data):
+        logger.info('%s heartbeat request accepted: IMEI=%s' % (self.client, data['imei']))
+        try:
+            u = Unit.objects.get(imei = data['imei'])
+        except:
+            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            self.reply('NOAUTH')
+            return
+
+        m = Message(
+            latitude = None,
+            longitude = None,
+            message_type = 2,
+            unit = u
+            )
+        m.save()
+        self.reply('ON')
+
+    def low_battery(self, data):
+        logger.info('%s low battery message accepted: IMEI=%s' % (self.client, data['imei']))
+        u = Unit.objects.filter(imei = data['imei'])
+        if u.count() == 0:
+            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            self.reply('NOAUTH')
+            return
+
+        m = Message(
+            latitude = self.location(data['latitude'], data['latitude_zoning']),
+            longitude = self.location(data['longitude'], data['longitude_zoning']),
+            message_type = 3,
+            unit = u
+        )
+        m.save()
+        self.reply('OK')
+
+    def sos(self, data):
+        logger.info('%s sos message accepted: IMEI=%s' % (self.client, data['imei']))
+        try:
+            u = Unit.objects.get(imei = data['imei'])
+        except:
+            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            self.reply('NOAUTH')
+            return
+
+        m = Message(
+            latitude = self.location(data['latitude'], data['latitude_zoning']),
+            longitude = self.location(data['longitude'], data['longitude_zoning']),
+            message_type = 4,
+            unit = u
+        )
+        m.save()
+        self.reply('OK')
+
+    def geo_fence(self):
+        logger.info('%s geo-fence message accepted: IMEI=%s' % (self.client, data['imei']))
+
+    def move(self):
+        logger.info('%s move message accepted: IMEI=%s' % (self.client, data['imei']))
+
+    def over_speed(self):
+        logger.info('%s over speed message accepted: IMEI=%s' % (self.client, data['imei']))
+
+    def tracker(self, data):
+        logger.info('%s tracker message accepted: IMEI=%s' % (self.client, data['imei']))
+        try:
+            u = Unit.objects.get(imei = data['imei'])
+        except:
+            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            self.reply('NOAUTH')
+            return
+
+        m = Message(
+            latitude = self.location(data['latitude'], data['latitude_zoning']),
+            longitude = self.location(data['longitude'], data['longitude_zoning']),
+            message_type = 5,
+            unit = u
+        )
+        m.save()
+        self.reply('OK')
+
+    def unknown(self):
+        if(len(self.data) > 0):
+            logger.warn('unknown message accepted: %s > %s' % (self.client, self.data))
+            self.reply('ERROR')
+
+    def reply(self, message):
+        logger.debug('%s < %s' % (self.client, message))
+        self.request.sendto("%s\n" % message, self.client_address)
+
+    def location(self, degrees, zoning):
+        m = re.compile('^(?P<degrees>[0-9]{2,3})(?P<minutes>[0-9]{2})\.(?P<float>[0-9]{4})$')
+
+        try:
+            data = m.search(str(degrees)).groupdict()
+        except:
+            return None
+
+        try:
+            res = float('%i.%i' % (int(data['degrees']), int(int('%s%s' % (data['minutes'], data['float'])) / 60)))
+            if zoning in ['S', 'W']:
+                return (-1 * res)
+            else:
+                return res
+        except:
+            return None
+
+if __name__ == "__main__":
+    server = SocketServer.ThreadingTCPServer((settings.DAEMON_HOST, settings.DAEMON_PORT), GPSRequestHandler)
+    server.serve_forever()
