@@ -11,6 +11,9 @@
 .page-content {
     padding-top: 60px;
 }
-.units-control {
-    padding: 30px;
+.unit-add {
+    padding: 300px;
+}
+.quick-add-unit input {
+    margin: 0 auto;
 }

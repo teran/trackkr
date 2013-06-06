@@ -5,6 +5,9 @@
 
 {% block content %}
             <div class="auth-form">
+                {% if error %}
+                    <div class="alert alert-error">{% trans error %}</div>
+                {% endif %}
                 <form class="form-horizontal" action="/login.html" method="post">
                     {% csrf_token %}
                     <div class="control-group">
@@ -21,9 +24,9 @@
                     </div>
                     <div class="control-group">
                         <div class="controls">
-                            <label class="checkbox">
+                            <!-- <label class="checkbox">
                                 <input type="checkbox"> Remember me
-                            </label>
+                            </label> -->
                             <button type="submit" class="btn">Sign in</button>
                         </div>
                     </div>
