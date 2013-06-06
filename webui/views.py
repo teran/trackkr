@@ -106,6 +106,7 @@ def unit_delete(request, imei):
     return redirect(nexturl)
 
 
+@login_required
 def units(request):
     return render_to_response('webui/units.html',
                               {},
