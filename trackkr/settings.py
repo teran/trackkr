@@ -168,3 +168,9 @@ LOGGING = {
         },
     }
 }
+
+DAEMON_LOG = '%s/../daemon.log' % PROJECT_ROOT
+
+DAEMON_HOST = 'localhost'
+
+DAEMON_PORT = 9000
