@@ -1,6 +1,13 @@
 .auth-form {
     padding: 300px;
 }
+.dashboard-map {
+    height: 900px;
+    border: 1px dotted #cccccc;
+}
+.last-location {
+    padding: 30px;
+}
 .page-content {
     padding-top: 60px;
 }
