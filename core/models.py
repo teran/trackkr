@@ -38,3 +38,6 @@ class Message(models.Model):
 
     def __unicode__(self):
         return '%s, %s (%s)' % (self.longitude, self.latitude, self.timestamp)
+
+    def position(self):
+        return '%s, %s' % (self.longitude, self.latitude)
