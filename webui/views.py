@@ -6,9 +6,9 @@ from django.template import RequestContext
 
 @login_required
 def dashboard(request):
-    render_to_response('webui/dashboard.html',
-                       {},
-                       context_instance=RequestContext(request))
+    return render_to_response('webui/dashboard.html',
+                              {},
+                              context_instance=RequestContext(request))
 
 
 def index(request):
