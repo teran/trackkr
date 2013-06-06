@@ -14,8 +14,11 @@ class Unit(models.Model):
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.imei)
 
-    def get_last_pos(self):
-        pass
+    def get_lastlocation(self):
+        return False
+
+    def get_lastseen(self):
+        return False
 
 
 class Message(models.Model):
