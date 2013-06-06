@@ -25,6 +25,10 @@ DATABASES = {
     }
 }
 
+LOGIN_URL = '/login.html'
+LOGIN_REDIRECT_URL = '/dashboard.html'
+LOGOUT_URL = '/logout.html'
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []

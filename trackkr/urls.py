@@ -1,17 +1,10 @@
 from django.conf.urls import patterns, include, url
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
-
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'trackkr.views.home', name='home'),
-    # url(r'^trackkr/', include('trackkr.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+urlpatterns = patterns(
+    '',
+    (r'^$', 'webui.views.index'),
+    (r'^dashboard.html$', 'webui.views.dashboard'),
+    (r'^login.html$', 'webui.views.log_in'),
+    (r'^logout.html$', 'webui.views.log_out'),
+    (r'^units.html$', 'webui.views.units'),
 )
