@@ -42,7 +42,14 @@ def log_in(request):
 
 
 def log_out(request):
-    pass
+    try:
+        nexturl = request.GET['next']
+    except:
+        nexturl = '/'
+
+    logout(request)
+
+    return redirect(nexturl)
 
 
 @login_required
