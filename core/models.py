@@ -31,8 +31,8 @@ class Message(models.Model):
 
     timestamp = models.DateTimeField(auto_now_add=True)
     unit = models.ForeignKey(Unit, related_name='messages')
-    longitude = models.FloatField(blank=True)
-    latitude = models.FloatField(blank=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
     message_type = models.IntegerField(max_length=2,
                                        choices=MESSAGE_TYPES)
 
