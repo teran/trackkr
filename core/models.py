@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Unit(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
-    imei = models.CharField(max_length=128)
+    imei = models.CharField(max_length=128, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
