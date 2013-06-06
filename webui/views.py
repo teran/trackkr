@@ -1,13 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
+
+from core.models import Unit
 
 
 @login_required
 def dashboard(request):
+    units = Unit.objects.all()
+
     return render_to_response('webui/dashboard.html',
-                              {},
+                              {'units': units},
                               context_instance=RequestContext(request))
 
 
