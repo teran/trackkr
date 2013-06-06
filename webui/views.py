@@ -35,10 +35,14 @@ def log_in(request):
                 return redirect(nexturl)
             else:
                 # Return a 'disabled account' error message
-                pass
+                return render_to_response('webui/login.html',
+                                          {'error': 'Account is disabled'},
+                                          context_instance=RequestContext(request))
         else:
             # Return an 'invalid login' error message.
-            pass
+            return render_to_response('webui/login.html',
+                                      {'error': 'Username or password is invalid'},
+                                      context_instance=RequestContext(request))
 
     return render_to_response('webui/login.html',
                               {},
