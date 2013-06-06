@@ -93,6 +93,19 @@ def unit_add(request):
                               context_instance=RequestContext(request))
 
 
+def unit_delete(request, imei):
+    try:
+        nexturl = request.GET['next']
+    except:
+        nexturl = '/'
+
+    unit = get_object_or_404(Unit, imei=imei)
+
+    unit.delete()
+
+    return redirect(nexturl)
+
+
 def units(request):
     return render_to_response('webui/units.html',
                               {},
