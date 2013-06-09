@@ -18,7 +18,7 @@ data = [
     {'title': 'heartbeat', 'message': '123456789012377;', 'reply': 'ON'},
     {'title': 'tracker no gps', 'message': 'imei:123456789012377,tracker,000000000,+1231234567,L,,,1e4a,,37b0,,,;', 'reply': 'OK'},
     {'title': 'tracker with gps', 'message': 'imei:123456789012377,tracker,1304052202,+1231234567,F,180215.000,A,5545.2352,N,03936.9996,E,0.00,0;', 'reply': 'OK'},
-    {'title': 'tracker with gps south latitude', 'message': 'imei:123456789012377,tracker,1304052202,+1231234567,F,180215.000,A,5845.2352,N,03736.9996,E,0.00,0;', 'reply': 'OK'},
+    {'title': 'tracker with gps south latitude', 'message': 'imei:123456789012377,tracker,1304052202,+1231234567,F,180215.000,A,5845.2352,S,03736.9996,E,0.00,0;', 'reply': 'OK'},
     {'title': 'help me no gps', 'message': 'imei:123456789012377,help me,000000000,,L,,,1e4a,,37b0,,,;', 'reply': 'OK'},
     {'title': 'tracker with gps south latitude', 'message': 'imei:123456789012345,tracker,1304052202,+1231234567,F,180215.000,A,5545.2352,N,03736.9996,E,0.00,0;', 'reply': 'OK'},
 ]
