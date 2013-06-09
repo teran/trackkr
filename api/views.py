@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, HttpResponse, Http404
 from django.template import RequestContext
+from django.template.defaultfilters import timesince
 
 from core.models import Unit
 
@@ -15,7 +16,8 @@ def lastpos(request, imei):
 
     return HttpResponse(content=json.dumps({'latitude': lastloc.latitude,
                                             'longitude': lastloc.longitude,
-                                            'timestamp': lastloc.timestamp.strftime('%Y-%m-%dT%H:%M:%S')}),
+                                            'name': unit.name,
+                                            'timestamp': timesince(lastloc.timestamp)}),
                         content_type='application/json')
 
 
