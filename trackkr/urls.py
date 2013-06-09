@@ -6,6 +6,7 @@ urlpatterns = patterns(
     (r'^dashboard.html$', 'webui.views.dashboard'),
     (r'^login.html$', 'webui.views.log_in'),
     (r'^logout.html$', 'webui.views.log_out'),
+    (r'^api/recentpos.json$', 'api.views.recentpos'),
     (r'^api/units/(?P<imei>[0-9]+).json$', 'api.views.lastpos'),
     (r'^api/units.json', 'api.views.units'),
     (r'^units.html$', 'webui.views.units'),

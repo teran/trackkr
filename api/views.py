@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, HttpResponse, Http404
 from django.template import RequestContext
 from django.template.defaultfilters import timesince
 
-from core.models import Unit
+from core.models import Unit, Message
 
 
 @login_required
@@ -26,4 +26,13 @@ def units(request):
     units = Unit.objects.filter(user=request.user)
 
     return HttpResponse(content=json.dumps([{'imei':unit.imei, 'name':unit.name} for unit in units]),
+                        content_type='application/json')
+
+
+def recentpos(request):
+    unit = Unit.objects.filter(user=request.user)
+    lastloc = Message.objects.filter(~Q(latitude=None, longitude=None), unit__in=unit).order_by('-timestamp')[0]
+
+    return HttpResponse(content=json.dumps({'latitude': lastloc.latitude,
+                                            'longitude': lastloc.longitude}),
                         content_type='application/json')
