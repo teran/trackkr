@@ -1,0 +1,41 @@
+{% extends 'common/base.html' %}
+{% load i18n staticfiles %}
+
+{% block title %}{% trans 'Units' %}{% endblock %}
+
+{% block content %}
+            <div class="units-list">
+                <div class="quick-add-unit">
+                    <form action="/units/add.html?next=/dashboard.html" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="name" id="inputName" placeholder="Name" />
+                        <input type="text" name="imei" id="inputIMEI" placeholder="IMEI" />
+                        <button type="submit" class="btn">{% trans 'Add' %}</button>
+                    </form>
+                </div>
+                <div class="units-list">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>{% trans '#' %}</td>
+                            <td>{% trans 'Unit name' %}</td>
+                            <td>{% trans 'Unit IMEI' %}</td>
+                            <td>{% trans 'Unit last location' %}</td>
+                            <td>{% trans 'Last seen' %}</td>
+                            <td>{% trans 'Active' %}</td>
+                            <td>{% trans 'Actions' %}</td>
+                        </tr>
+                        {% for unit in units %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="/units/{{ unit.imei }}.html">{{ unit.name }}</a></td>
+                            <td>{{ unit.imei }}</td>
+                            <td>{{ unit.get_lastlocation.position }}</td>
+                            <td>{{ unit.get_lastseen|timesince }} {% trans 'ago' %}</td>
+                            <td>{% if unit.active == True %}<i class="icon-ok"> </i>{% else %}<i class="icon-off"> </i>{% endif %}</td>
+                            <td><a class="btn" href="/units/delete/{{ unit.imei }}.html">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>    
+            </div>
+{% endblock %}

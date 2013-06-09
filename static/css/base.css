@@ -1,6 +1,7 @@
 .auth-form {
     padding: 300px;
 }
+.dashboard { }
 .dashboard-map {
     height: 900px;
     border: 1px dotted #cccccc;
@@ -14,6 +15,7 @@
 .unit-add {
     padding: 300px;
 }
+.units-list { }
 .quick-add-unit input {
     margin: 0 auto;
 }

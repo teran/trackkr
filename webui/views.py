@@ -8,7 +8,7 @@ from core.models import Unit
 
 @login_required
 def dashboard(request):
-    units = Unit.objects.all()
+    units = Unit.objects.all()[:5]
 
     return render_to_response('webui/dashboard.html',
                               {'units': units},
@@ -108,6 +108,7 @@ def unit_delete(request, imei):
 
 @login_required
 def units(request):
+    units = Unit.objects.all()
     return render_to_response('webui/units.html',
-                              {},
+                              {'units': units},
                               context_instance=RequestContext(request))
