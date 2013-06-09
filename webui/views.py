@@ -49,6 +49,7 @@ def log_in(request):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def log_out(request):
     try:
         nexturl = request.GET['next']
@@ -93,6 +94,7 @@ def unit_add(request):
                               context_instance=RequestContext(request))
 
 
+@login_required
 def unit_delete(request, imei):
     try:
         nexturl = request.GET['next']

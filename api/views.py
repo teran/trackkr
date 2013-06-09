@@ -29,6 +29,7 @@ def units(request):
                         content_type='application/json')
 
 
+@login_required
 def recentpos(request):
     unit = Unit.objects.filter(user=request.user)
     lastloc = Message.objects.filter(~Q(latitude=None, longitude=None), unit__in=unit).order_by('-timestamp')[0]
