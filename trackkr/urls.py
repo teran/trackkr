@@ -11,5 +11,6 @@ urlpatterns = patterns(
     (r'^api/units.json', 'api.views.units'),
     (r'^units.html$', 'webui.views.units'),
     (r'^units/add.html$', 'webui.views.unit_add'),
-    (r'^units/delete/(?P<imei>[0-9a-z]+).html$', 'webui.views.unit_delete'),
+    (r'^units/(?P<imei>[0-9]+).html$', 'webui.views.unit'),
+    (r'^units/delete/(?P<imei>[0-9]+).html$', 'webui.views.unit_delete'),
 )

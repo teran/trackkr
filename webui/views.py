@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import RequestContext
 
-from core.models import Unit
+from core.models import Unit, Message
 
 
 @login_required
@@ -101,11 +101,22 @@ def unit_delete(request, imei):
     except:
         nexturl = '/'
 
-    unit = get_object_or_404(Unit, imei=imei)
+    unit = get_object_or_404(Unit, imei=imei, user__in=request.user)
 
     unit.delete()
 
     return redirect(nexturl)
+
+
+@login_required
+def unit(request, imei):
+    unit = Unit.objects.get(imei=imei)
+    messages = Message.objects.filter(unit=unit)
+
+    return render_to_response('webui/units/unit.html',
+                              {'unit': unit,
+                               'messages': messages},
+                              context_instance=RequestContext(request))
 
 
 @login_required
