@@ -8,12 +8,13 @@
 {% block content %}
             <div class="dashboard">
                 <div class="quick-add-unit">
-                    <form action="/units/add.html?next=/dashboard.html" method="post">
+                    <form action="/units/add.html?next=/dashboard.html" method="post" class="quick-add-unit-form">
                         {% csrf_token %}
-                        <input type="text" name="name" id="inputName" placeholder="Name" />
-                        <input type="text" name="imei" id="inputIMEI" placeholder="IMEI" />
-                        <button type="submit" class="btn">{% trans 'Add' %}</button>
+                        <input type="text" class="quick-add-unit-name" name="name" id="inputName" placeholder="Name" />
+                        <input type="text" class="quick-add-unit-imei" name="imei" id="inputIMEI" placeholder="IMEI" />
+                        <button type="submit" class="btn quick-add-unit-submit">{% trans 'Add' %}</button>
                     </form>
+                    <div class="quick-add-unit-info"></div>
                 </div>
                 <div class="units-list">
                     <table class="table table-striped">
