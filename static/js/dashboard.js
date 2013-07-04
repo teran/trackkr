@@ -4,8 +4,8 @@ $('document').ready(function(){
             .done(function(loc){
                 var recentpos = [loc.latitude, loc.longitude];
                 var dashboard_map = new ymaps.Map("dashboard-map", {
-                    center: recentpos,
-                    zoom: 10
+                        center: recentpos,
+                        zoom: 10
                     });
                 
                 dashboard_map.controls
@@ -30,10 +30,10 @@ $('document').ready(function(){
                                     alert('fail: '+jqxhr+textStatus+error);
                                 });
                         });
-            })
-            .fail(function(jqxhr, textStatus, error){
-                alert('fail: '+jqxhr+textStatus+error);
-            });
+                })
+                .fail(function(jqxhr, textStatus, error){
+                    alert('fail: '+jqxhr+textStatus+error);
+                });
             })
             .fail(function() {
                 alert('Error retrieving latest unit position');
