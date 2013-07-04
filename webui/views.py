@@ -11,7 +11,7 @@ def dashboard(request):
     units = Unit.objects.all()[:5]
 
     return render_to_response('webui/dashboard.html',
-                              {'units': units},
+                              {'units': units, 'category': 'dashboard'},
                               context_instance=RequestContext(request))
 
 
@@ -123,5 +123,5 @@ def unit(request, imei):
 def units(request):
     units = Unit.objects.all()
     return render_to_response('webui/units.html',
-                              {'units': units},
+                              {'units': units, 'category': 'units'},
                               context_instance=RequestContext(request))
