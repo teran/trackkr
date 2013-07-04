@@ -17,22 +17,26 @@
                     <table class="table table-striped">
                         <tr>
                             <td>{% trans '#' %}</td>
-                            <td>{% trans 'Unit name' %}</td>
-                            <td>{% trans 'Unit IMEI' %}</td>
-                            <td>{% trans 'Unit last location' %}</td>
-                            <td>{% trans 'Last seen' %}</td>
-                            <td>{% trans 'Active' %}</td>
-                            <td>{% trans 'Actions' %}</td>
+                            <td>{% trans 'Timestamp' %}</td>
+                            <td>{% trans 'Coordinates' %}</td>
+                            <td>{% trans 'Address' %}</td>
                         </tr>
                         {% for message in messages %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
-                            <td><a href="/units/{{ unit.imei }}.html">{{ message.timestamp }}</a></td>
-                            <td>{{ message.longitude }}</td>
-                            <td>{{ message.latitude }}</td>
-                            <td>{{ unit.get_lastseen|timesince }} {% trans 'ago' %}</td>
-                            <td>{% if unit.active == True %}<i class="icon-ok"> </i>{% else %}<i class="icon-off"> </i>{% endif %}</td>
-                            <td><a class="btn" href="/units/delete/{{ unit.imei }}.html">Delete</a></td>
+                            <td>{{ message.timestamp }}</td>
+                            <td>{% if message.longitude and message.latitude %}<a href="http://geocode-maps.yandex.ru/1.x/?geocode={{ message.longitude }},%20{{ message.latitude }}&format=json">{{ message.longitude }}, {{ message.latitude }}</a>{% else %}N/A{% endif %}</td>
+                            <td id="message_{{ message.id }}">
+                                {% if message.longitude and message.latitude %}
+                                <script>
+                                    $.getJSON('http://geocode-maps.yandex.ru/1.x/?geocode={{ message.longitude }},%20{{ message.latitude }}&format=json')
+                                        .done(function(data){
+                                            $.('#message_{{ message.id }}').html('lol');
+                                            // data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.text
+                                        });
+                                </script>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                     </table>
