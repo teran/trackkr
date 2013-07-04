@@ -89,3 +89,9 @@
                 </div>
             </div>
 {% endblock %}
+
+{% block postjavascripts %}
+        <script src="//api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>
+        <script src="{% static 'js/dashboard.js' %}"></script>
+        <script src="{% static 'js/handler.js' %}"></script>
+{% endblock %}
