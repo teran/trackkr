@@ -8,7 +8,7 @@
 {% block content %}
             <div class="dashboard">
                 <div class="quick-add-unit">
-                    <form action="/units/add.html?next=/dashboard.html" method="post" class="quick-add-unit-form">
+                    <form action="#" method="post" class="quick-add-unit-form">
                         {% csrf_token %}
                         <input type="text" class="quick-add-unit-name" name="name" id="inputName" placeholder="Name" />
                         <input type="text" class="quick-add-unit-imei" name="imei" id="inputIMEI" placeholder="IMEI" />
@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% block postjavascripts %}
-        <script src="//api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>
         <script src="{% static 'js/dashboard.js' %}"></script>
         <script src="{% static 'js/handler.js' %}"></script>
+        <script src="//api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>
 {% endblock %}
