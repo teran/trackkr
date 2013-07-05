@@ -22,11 +22,10 @@ def lastpos(request, imei):
 
 
 @login_required
-def location(request, imei, message):
+def location(request, messageid):
     message = get_object_or_404(Message, pk=messageid)
 
-    return HttpResponse(content=json.dumps({'timestamp': message.timestamp,
-                                            'latitude': message.latitude,
+    return HttpResponse(content=json.dumps({'latitude': message.latitude,
                                             'longitude': message.longitude}),
                         content_type='application/json')
 
