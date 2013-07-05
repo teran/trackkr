@@ -22,10 +22,20 @@ def lastpos(request, imei):
 
 
 @login_required
+def location(request, imei, message):
+    message = get_object_or_404(Message, pk=messageid)
+
+    return HttpResponse(content=json.dumps({'timestamp': message.timestamp,
+                                            'latitude': message.latitude,
+                                            'longitude': message.longitude}),
+                        content_type='application/json')
+
+
+@login_required
 def units(request):
     units = Unit.objects.filter(user=request.user)
 
-    return HttpResponse(content=json.dumps([{'imei':unit.imei, 'name':unit.name} for unit in units]),
+    return HttpResponse(content=json.dumps([{'imei': unit.imei, 'name': unit.name} for unit in units]),
                         content_type='application/json')
 
 

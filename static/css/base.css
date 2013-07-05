@@ -15,6 +15,11 @@
 .unit-add {
     padding: 300px;
 }
+.unit-map {
+    height: 900px;
+    width: 100%;
+    /*border: 1px dotted #cccccc;*/
+}
 .units-list { }
 .quick-add-unit input {
     margin: 0 auto;

@@ -5,16 +5,37 @@
 
 {% block content %}
             <div class="units-list">
-                <div class="quick-add-unit">
+                <!--<div class="quick-add-unit">
                     <form action="/units/add.html?next=/dashboard.html" method="post">
                         {% csrf_token %}
                         <input type="text" name="name" id="inputName" placeholder="Name" />
                         <input type="text" name="imei" id="inputIMEI" placeholder="IMEI" />
                         <button type="submit" class="btn">{% trans 'Add' %}</button>
                     </form>
+                </div>-->
+                <div class="unit-info">
+                    <p>
+                        <strong>IMEI:</strong> <span class="unit-imei">{{ unit.imei }}</span>
+                    </p>
+                    <p>
+                        <strong>Name:</strong> <span class="unit-name">{{ unit.name }}</span>
+                    </p>
                 </div>
-                <div class="units-list">
-                    <table class="table table-striped">
+                <div class="unit-locations">
+                    <div class="tabbable tabs-left">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#now-map">Latest</a></li>
+                            {% for message in messages %}
+                            <li><a class="unit-location-link" href="#{{ message.pk }}">{{ message.timestamp }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="now-map">
+                                <div id="unit-map" class="unit-map"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<table class="table table-striped">
                         <tr>
                             <td>{% trans '#' %}</td>
                             <td>{% trans 'Timestamp' %}</td>
@@ -22,7 +43,7 @@
                             <td>{% trans 'Address' %}</td>
                         </tr>
                         {% for message in messages %}
-                        <tr>
+                        <!--<tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ message.timestamp }}</td>
                             <td>{% if message.longitude and message.latitude %}<a href="http://geocode-maps.yandex.ru/1.x/?geocode={{ message.longitude }},%20{{ message.latitude }}&format=json">{{ message.longitude }}, {{ message.latitude }}</a>{% else %}N/A{% endif %}</td>
@@ -39,7 +60,14 @@
                             </td>
                         </tr>
                         {% endfor %}
-                    </table>
+                        
+                    </table>-->
                 </div>    
             </div>
+{% endblock %}
+
+{% block postjavascripts %}
+        <script src="{% static 'js/unit.js' %}"></script>
+        <script src="{% static 'js/handler.js' %}"></script>
+        <script src="//api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>
 {% endblock %}
