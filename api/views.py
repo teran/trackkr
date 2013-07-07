@@ -12,12 +12,24 @@ from core.models import Unit, Message
 @login_required
 def lastpos(request, imei):
     unit = get_object_or_404(Unit, imei=imei)
-    lastloc = unit.messages.filter(~Q(latitude=None, longitude=None)).order_by('-timestamp')[0]
+    lastloc = unit.get_lastlocation()
 
-    return HttpResponse(content=json.dumps({'latitude': lastloc.latitude,
-                                            'longitude': lastloc.longitude,
-                                            'name': unit.name,
-                                            'timestamp': timesince(lastloc.timestamp)}),
+    try:
+        out = {
+            'latitude': lastloc.latitude,
+            'longitude': lastloc.longitude,
+            'name': unit.name,
+            'timestamp': unit.lastseen()
+        }
+    except:
+        out = {
+            'latitude': None,
+            'longitude': None,
+            'name': unit.name,
+            'timestamp': None
+        }
+
+    return HttpResponse(content=json.dumps(out),
                         content_type='application/json')
 
 

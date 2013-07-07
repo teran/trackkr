@@ -15,10 +15,16 @@ class Unit(models.Model):
         return '%s (%s)' % (self.name, self.imei)
 
     def get_lastlocation(self):
-        return self.messages.filter(~models.Q(latitude=None, longitude=None)).order_by('-timestamp')[0]
+        try:
+            return self.messages.filter(~models.Q(latitude=None, longitude=None)).order_by('-timestamp')[0]
+        except:
+            return None
 
     def get_lastseen(self):
-        return self.messages.filter(~models.Q(latitude=None, longitude=None)).order_by('-timestamp')[0].timestamp
+        try:
+            return self.messages.filter(~models.Q(latitude=None, longitude=None)).order_by('-timestamp')[0].timestamp
+        except:
+            return None
 
 
 class Message(models.Model):
