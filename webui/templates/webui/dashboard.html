@@ -24,7 +24,6 @@
                             <td>{% trans 'Unit IMEI' %}</td>
                             <td>{% trans 'Unit last location' %}</td>
                             <td>{% trans 'Last seen' %}</td>
-                            <td>{% trans 'Actions' %}</td>
                         </tr>
                         {% for unit in units %}
                         <tr>
@@ -33,7 +32,6 @@
                             <td>{{ unit.imei }}</td>
                             <td>{{ unit.get_lastlocation.position }}</td>
                             <td>{{ unit.get_lastseen|timesince }} {% trans 'ago' %}</td>
-                            <td><a class="btn" href="/units/delete/{{ unit.imei }}.html">Delete</a></td>
                         </tr>
                         {% endfor %}
                         <tr>
