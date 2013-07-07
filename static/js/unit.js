@@ -53,7 +53,8 @@ $('document').ready(function(){
                                 balloonContentBody: data.timestamp
                             }
                         ));
-                    $(this).parent().addClass('active');
+                    $('.message-tab-each').removeClass('active');
+                    $('.message-tab-'+pk).addClass('active');
                 })
                 .fail(function(){
                     

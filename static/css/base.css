@@ -9,6 +9,10 @@
 .last-location {
     padding: 30px;
 }
+.messages-tabs {
+    height: 900px;
+    overflow: auto;
+}
 .page-content {
     padding-top: 60px;
 }
