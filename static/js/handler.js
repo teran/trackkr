@@ -3,34 +3,35 @@ $('document').ready(function() {
         event.preventDefault();
         var name = $('.quick-add-unit-name').val();
         var imei = $('.quick-add-unit-imei').val();
-        var info_area = $('.quick-add-unit-info');
         var csrf_token = $('.quick-add-unit-form input[csrfmiddlewaretoken]').val();
 
         if(name == '') {
-            info_area.removeClass('alert alert-error alert-success');
-            info_area.addClass('alert alert-error');
-            info_area.html('Name field cannot be empty');
-            return false;
+            $('.notifications').removeClass('alert alert-error alert-success');
+            $('.notifications').addClass('alert alert-error');
+            $('.notifications').html('Name field cannot be empty');
+            return;
         }
 
         if(imei == '') {
-            info_area.removeClass('alert alert-error alert-success');
-            info_area.addClass('alert alert-error');
-            info_area.html('IMEI field cannot be empty');
-            return false;
+            $('.notifications').removeClass('alert alert-error alert-success');
+            $('.notifications').addClass('alert alert-error');
+            $('.notifications').html('IMEI field cannot be empty');
+            return;
         }
 
         $.post('/api/unit/add.json', 'name='+name+'&imei='+imei)
             .done(function() {
-                info_area.removeClass('alert alert-error alert-success');
-                info_area.addClass('alert alert-success');
-                info_area.html('Unit successfully added');
+                $('.notifications').removeClass('alert alert-error alert-success');
+                $('.notifications').addClass('alert alert-success');
+                $('.notifications').html('Unit successfully added');
             })
-            .fail(function() {
-                info_area.removeClass('alert alert-error alert-success');
-                info_area.addClass('alert alert-error');
-                info_area.html('XHR query error' + csrf_token);
-                return false;
+            .fail(function(jqxhr, textStatus, error) {
+                $('.notifications').removeClass('alert alert-error alert-success');
+                $('.notifications').addClass('alert alert-error');
+                $('.notifications').html('jQXHR query error occured');
+            });
+    });
+
     $('.unit-location-link').click(function(event) {
         event.preventDefault();
         var pk = $(this).attr('href');
@@ -59,6 +60,10 @@ $('document').ready(function() {
                 $('.message-tab-each').removeClass('active');
                 $('.message-tab-'+pk).addClass('active');
             })
-        return true;
+            .fail(function(jqxhr, textStatus, error) {
+                $('.notifications').removeClass('alert alert-error alert-success');
+                $('.notifications').addClass('alert alert-error');
+                $('.notifications').html('jQXHR query error occured');
+            });
     });
 });

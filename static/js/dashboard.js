@@ -26,16 +26,22 @@ $('document').ready(function() {
                                     ));
                                 })
                                 .fail(function(jqxhr, textStatus, error) {
-                                    alert('fail: '+jqxhr+textStatus+error);
+                                    $('.notifications').removeClass('alert alert-error alert-success');
+                                    $('.notifications').addClass('alert alert-error');
+                                    $('.notifications').html('jQXHR query error occured');
                                 });
                         });
-                })
-                .fail(function(jqxhr, textStatus, error) {
-                    alert('fail: '+jqxhr+textStatus+error);
-                });
+                    })
+                    .fail(function(jqxhr, textStatus, error) {
+                        $('.notifications').removeClass('alert alert-error alert-success');
+                        $('.notifications').addClass('alert alert-error');
+                        $('.notifications').html('jQXHR query error occured');
+                    });
             })
-            .fail(function() {
-                alert('Error retrieving latest unit position');
+            .fail(function(jqxhr, textStatus, error) {
+                $('.notifications').removeClass('alert alert-error alert-success');
+                $('.notifications').addClass('alert alert-error');
+                $('.notifications').html('jQXHR query error occured');
             });
         });
 });

@@ -23,8 +23,10 @@ $('document').ready(function(){
                         }
                     ));
             })
-            .fail(function() {
-
+            .fail(function(jqxhr, textStatus, error) {
+                $('.notifications').removeClass('alert alert-error alert-success');
+                $('.notifications').addClass('alert alert-error');
+                $('.notifications').html('jQXHR query error occured');
             });
     });
 });
