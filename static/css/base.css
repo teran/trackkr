@@ -11,7 +11,8 @@
 }
 .messages-tabs {
     height: 900px;
-    overflow: auto;
+    width: 200px;
+    overflow: scroll;
 }
 .page-content {
     padding-top: 60px;
