@@ -113,7 +113,8 @@ def unit(request, imei):
 
     return render_to_response('webui/units/unit.html',
                               {'unit': unit,
-                               'messages': messages},
+                               'messages': messages,
+                               'category': 'units'},
                               context_instance=RequestContext(request))
 
 
