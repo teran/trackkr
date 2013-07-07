@@ -9,29 +9,28 @@ $('document').ready(function(){
                         center: recentpos,
                         zoom: 10
                     });
-                
+
                 unit_map.controls
                     .add('zoomControl', { left: 5, top: 5 })
                     .add('typeSelector')
                     .add('mapTools', { left: 35, top: 5 });
-                    
+
                 unit_map.geoObjects.add(
                     new ymaps.Placemark(
-                        [data.latitude, data.longitude],
-                        {
+                        [data.latitude, data.longitude], {
                             balloonContentHeader: data.name,
                             balloonContentBody: data.timestamp
                         }
                     ));
             })
             .fail(function() {
-                
+
             });
         $('.unit-location-link').click(function(event){
             event.preventDefault();
             var pk = $(this).attr('href');
             pk = pk.replace('#', '');
-            
+
             $.getJSON('/api/units/location/'+pk+'.json')
                 .done(function(data){
                     unit_map.destroy();
@@ -39,12 +38,12 @@ $('document').ready(function(){
                         center: [data.latitude, data.longitude],
                         zoom: 10
                     });
-                
+
                     unit_map.controls
                         .add('zoomControl', { left: 5, top: 5 })
                         .add('typeSelector')
                         .add('mapTools', { left: 35, top: 5 });
-                        
+
                     unit_map.geoObjects.add(
                         new ymaps.Placemark(
                             [data.latitude, data.longitude],
@@ -57,7 +56,7 @@ $('document').ready(function(){
                     $('.message-tab-'+pk).addClass('active');
                 })
                 .fail(function(){
-                    
+
                 });
         })
     });
