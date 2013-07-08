@@ -99,7 +99,7 @@ def unit_delete(request, imei):
     except:
         nexturl = '/'
 
-    unit = get_object_or_404(Unit, imei=imei, user__in=request.user)
+    unit = get_object_or_404(Unit, imei=imei, user=request.user)
 
     unit.delete()
 
