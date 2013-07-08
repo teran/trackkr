@@ -35,9 +35,10 @@ $('document').ready(function() {
     $('.unit-location-link').click(function(event) {
         event.preventDefault();
         var pk = $(this).attr('href');
+        var imei = $('.unit-imei').text();
         pk = pk.replace('#', '');
 
-        $.getJSON('/api/units/location/'+pk+'.json')
+        $.getJSON('/api/location.json?imei='+imei+'&message='+pk)
             .done(function(data){
                 unit_map.destroy();
                 unit_map = new ymaps.Map("unit-map", {

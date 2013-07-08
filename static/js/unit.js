@@ -2,7 +2,7 @@ $('document').ready(function(){
     ymaps.ready(function(){
         var imei = $('.unit-imei').text();
         var unit_map;
-        $.getJSON('/api/units/'+imei+'.json')
+        $.getJSON('/api/location.json?imei='+imei)
             .done(function(data){
                 var recentpos = [data.latitude, data.longitude];
                 unit_map = new ymaps.Map("unit-map", {
