@@ -35,8 +35,15 @@ $('document').ready(function(){
             var pk = $(this).attr('href');
             var imei = $('.unit-imei').text();
             pk = pk.replace('#', '');
+            var url;
+
+            if(pk == 'latest') {
+                url = '/api/location.json?imei='+imei;
+            } else {
+                url = '/api/location.json?imei='+imei+'&message='+pk;
+            }
     
-            $.getJSON('/api/location.json?imei='+imei+'&message='+pk)
+            $.getJSON(url)
                 .done(function(data){
                     unit_map.destroy();
                     unit_map = new ymaps.Map("unit-map", {

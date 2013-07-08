@@ -24,7 +24,7 @@
                 <div class="unit-locations">
                     <div class="tabbable tabs-left">
                         <ul class="nav nav-tabs messages-tabs">
-                            <li class="active message-tab-each message-tab-latest"><a class="unit-location-link" href="">Latest</a></li>
+                            <li class="active message-tab-each message-tab-latest"><a class="unit-location-link" href="#latest">Latest</a></li>
                             {% for message in messages %}
                             <li class="message-tab-each message-tab-{{ message.pk }}"><a class="unit-location-link" href="#{{ message.pk }}">{{ message.timestamp }}</a></li>
                             {% endfor %}
