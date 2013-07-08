@@ -6,29 +6,33 @@ $('document').ready(function() {
         var csrf_token = $('.quick-add-unit-form input[csrfmiddlewaretoken]').val();
 
         if(name == '') {
-            $('.notifications').removeClass('alert alert-error alert-success');
-            $('.notifications').addClass('alert alert-error');
-            $('.notifications').html('Name field cannot be empty');
+            $('.notifications')
+                .removeClass('alert alert-error alert-success')
+                .addClass('alert alert-error')
+                .html('Name field cannot be empty');
             return;
         }
 
         if(imei == '') {
-            $('.notifications').removeClass('alert alert-error alert-success');
-            $('.notifications').addClass('alert alert-error');
-            $('.notifications').html('IMEI field cannot be empty');
+            $('.notifications')
+                .removeClass('alert alert-error alert-success')
+                .addClass('alert alert-error')
+                .html('IMEI field cannot be empty');
             return;
         }
 
         $.post('/api/unit/add.json', 'name='+name+'&imei='+imei)
             .done(function() {
-                $('.notifications').removeClass('alert alert-error alert-success');
-                $('.notifications').addClass('alert alert-success');
-                $('.notifications').html('Unit successfully added');
+                $('.notifications')
+                    .removeClass('alert alert-error alert-success')
+                    .addClass('alert alert-error')
+                    .html('Unit successfully added');
             })
             .fail(function(jqxhr, textStatus, error) {
-                $('.notifications').removeClass('alert alert-error alert-success');
-                $('.notifications').addClass('alert alert-error');
-                $('.notifications').html('jQXHR query error occured');
+                $('.notifications')
+                    .removeClass('alert alert-error alert-success')
+                    .addClass('alert alert-error')
+                    .html('jQXHR query error occured');
             });
     });
 
@@ -62,9 +66,10 @@ $('document').ready(function() {
                 $('.message-tab-'+pk).addClass('active');
             })
             .fail(function(jqxhr, textStatus, error) {
-                $('.notifications').removeClass('alert alert-error alert-success');
-                $('.notifications').addClass('alert alert-error');
-                $('.notifications').html('jQXHR query error occured');
+                $('.notifications')
+                    .removeClass('alert alert-error alert-success')
+                    .addClass('alert alert-error')
+                    .html('jQXHR query error occured');
             });
     });
 });
