@@ -71,7 +71,7 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
             longitude=None,
             message_type=1,
             unit=u
-            )
+        )
         m.save()
         self.reply('LOAD')
 
@@ -89,7 +89,7 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
             longitude=None,
             message_type=2,
             unit=u
-            )
+        )
         m.save()
         self.reply('ON')
 
