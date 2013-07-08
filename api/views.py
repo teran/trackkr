@@ -39,10 +39,21 @@ def location(request):
     try:
         imei = int(request.GET['imei'])
     except:
-        return HttpResponseBadRequest(content=json.dumps({
-            'status': 'error',
-            'reason': 'imei is required in GET parameters'
-        }), content_type='application/json')
+        units = Unit.objects.filter(user=request.user)
+        out = []
+        for unit in units:
+            location = unit.get_lastlocation()
+
+            if location is not None:
+                out.append({
+                    'latitude': location.latitude,
+                    'longitude': location.longitude,
+                    'name': location.unit.name,
+                    'timestamp': str(location.timestamp)
+                })
+
+        return HttpResponse(content=json.dumps(out),
+                            content_type='application/json')
 
     if request.GET.has_key('message'):
         messageid = int(request.GET['message'])
@@ -51,7 +62,8 @@ def location(request):
         return HttpResponse(content=json.dumps({
             'longitude': message.longitude,
             'latitude': message.latitude,
-            'name': message.unit.name
+            'name': message.unit.name,
+            'timestamp': str(location.timestamp)
         }), content_type='application/json')
     else:
         unit = get_object_or_404(Unit, imei=imei, user=request.user)
@@ -62,6 +74,7 @@ def location(request):
                 'longitude': location.longitude,
                 'latitude': location.latitude,
                 'name': location.unit.name,
+                'timestamp': str(location.timestamp)
             }), content_type='application/json')
         except:
             return HttpResponseBadRequest(content=json.dumps({
