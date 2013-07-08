@@ -63,7 +63,7 @@ def location(request):
             'longitude': message.longitude,
             'latitude': message.latitude,
             'name': message.unit.name,
-            'timestamp': str(location.timestamp)
+            'timestamp': str(message.timestamp)
         }), content_type='application/json')
     else:
         unit = get_object_or_404(Unit, imei=imei, user=request.user)
