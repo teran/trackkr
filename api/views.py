@@ -77,9 +77,11 @@ def location(request):
                 'timestamp': str(location.timestamp)
             }), content_type='application/json')
         except:
-            return HttpResponseBadRequest(content=json.dumps({
-                'status': 'error',
-                'reason': 'no options enough to complete query'
+            return HttpResponse(content=json.dumps({
+                'longitude': None,
+                'latitude': None,
+                'name': unit.name,
+                'timestamp': None
             }), content_type='application/json')
 
 
