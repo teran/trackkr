@@ -108,9 +108,8 @@ def unit_delete(request, imei):
 
 @login_required
 def unit(request, imei):
-    unit = Unit.objects.get(imei=imei)
-    messages = Message.objects.filter(unit=unit, latitude__isnull=False,longitude__isnull=False)
     unit = Unit.objects.get(imei=imei, user=request.user)
+    messages = Message.objects.filter(unit=unit, latitude__isnull=False, longitude__isnull=False).order_by('-timestamp')
 
     return render_to_response('webui/units/unit.html',
                               {'unit': unit,
