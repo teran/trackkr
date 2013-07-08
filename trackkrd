@@ -23,16 +23,19 @@ logger.setLevel(logging.DEBUG)
 class GPSRequestHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         while 1:
-            self.data = self.request.recv(1024).strip()
-            self.client = '%s:%s' % (self.client_address[0], self.client_address[1])
+            try:
+                self.data = self.request.recv(1024).strip()
+                self.client = '%s:%s' % (self.client_address[0], self.client_address[1])
 
-            if self.data and len(self.data) > 0:
-                logger.debug('%s > %s' % (self.client, self.data))
-            else:
-                try:
-                    self.request.close()
-                except:
-                    pass
+                if self.data and len(self.data) > 0:
+                    logger.debug('%s > %s' % (self.client, self.data))
+                else:
+                    try:
+                        self.request.close()
+                    except:
+                        pass
+            except:
+                self.request.close()
 
             # Regex'es
             re_logon = re.compile('^##,imei:(?P<imei>[0-9]{15}),([A-Z]{1});$')
