@@ -16,7 +16,7 @@ logger = logging.getLogger('trackkrd')
 hdlr = logging.FileHandler(settings.DAEMON_LOG)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
-logger.addHandler(hdlr) 
+logger.addHandler(hdlr)
 logger.setLevel(logging.DEBUG)
 
 
@@ -57,17 +57,17 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
     def logon(self, data):
         logger.info('%s logon message accepted: IMEI=%s' % (self.client, data['imei']))
         try:
-            u = Unit.objects.get(imei = data['imei'])
+            u = Unit.objects.get(imei=data['imei'])
         except:
             logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
         m = Message(
-            latitude = None,
-            longitude = None,
-            message_type = 1,
-            unit = u
+            latitude=None,
+            longitude=None,
+            message_type=1,
+            unit=u
             )
         m.save()
         self.reply('LOAD')
@@ -75,34 +75,34 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
     def heartbeat(self, data):
         logger.info('%s heartbeat request accepted: IMEI=%s' % (self.client, data['imei']))
         try:
-            u = Unit.objects.get(imei = data['imei'])
+            u = Unit.objects.get(imei=data['imei'])
         except:
             logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
         m = Message(
-            latitude = None,
-            longitude = None,
-            message_type = 2,
-            unit = u
+            latitude=None,
+            longitude=None,
+            message_type=2,
+            unit=u
             )
         m.save()
         self.reply('ON')
 
     def low_battery(self, data):
         logger.info('%s low battery message accepted: IMEI=%s' % (self.client, data['imei']))
-        u = Unit.objects.filter(imei = data['imei'])
+        u = Unit.objects.filter(imei=data['imei'])
         if u.count() == 0:
             logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
         m = Message(
-            latitude = self.location(data['latitude'], data['latitude_zoning']),
-            longitude = self.location(data['longitude'], data['longitude_zoning']),
-            message_type = 3,
-            unit = u
+            latitude=self.location(data['latitude'], data['latitude_zoning']),
+            longitude=self.location(data['longitude'], data['longitude_zoning']),
+            message_type=3,
+            unit=u
         )
         m.save()
         self.reply('OK')
@@ -110,17 +110,17 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
     def sos(self, data):
         logger.info('%s sos message accepted: IMEI=%s' % (self.client, data['imei']))
         try:
-            u = Unit.objects.get(imei = data['imei'])
+            u = Unit.objects.get(imei=data['imei'])
         except:
             logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
         m = Message(
-            latitude = self.location(data['latitude'], data['latitude_zoning']),
-            longitude = self.location(data['longitude'], data['longitude_zoning']),
-            message_type = 4,
-            unit = u
+            latitude=self.location(data['latitude'], data['latitude_zoning']),
+            longitude=self.location(data['longitude'], data['longitude_zoning']),
+            message_type=4,
+            unit=u
         )
         m.save()
         self.reply('OK')
@@ -137,17 +137,17 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
     def tracker(self, data):
         logger.info('%s tracker message accepted: IMEI=%s' % (self.client, data['imei']))
         try:
-            u = Unit.objects.get(imei = data['imei'])
+            u = Unit.objects.get(imei=data['imei'])
         except:
             logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
         m = Message(
-            latitude = self.location(data['latitude'], data['latitude_zoning']),
-            longitude = self.location(data['longitude'], data['longitude_zoning']),
-            message_type = 5,
-            unit = u
+            latitude=self.location(data['latitude'], data['latitude_zoning']),
+            longitude=self.location(data['longitude'], data['longitude_zoning']),
+            message_type=5,
+            unit=u
         )
         m.save()
         self.reply('OK')
