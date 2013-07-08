@@ -2,7 +2,8 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect, HttpResponse, Http404
+from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import timesince
 
@@ -34,12 +35,39 @@ def lastpos(request, imei):
 
 
 @login_required
-def location(request, messageid):
-    message = get_object_or_404(Message, pk=messageid)
+def location(request):
+    try:
+        imei = int(request.GET['imei'])
+    except:
+        return HttpResponseBadRequest(content=json.dumps({
+            'status': 'error',
+            'reason': 'imei is required in GET parameters'
+        }), content_type='application/json')
 
-    return HttpResponse(content=json.dumps({'latitude': message.latitude,
-                                            'longitude': message.longitude}),
-                        content_type='application/json')
+    if request.GET.has_key('message'):
+        messageid = int(request.GET['message'])
+        message = get_object_or_404(Message, pk=messageid, unit__imei=imei, unit__user=request.user)
+
+        return HttpResponse(content=json.dumps({
+            'longitude': message.longitude,
+            'latitude': message.latitude,
+            'name': message.unit.name
+        }), content_type='application/json')
+    else:
+        unit = get_object_or_404(Unit, imei=imei, user=request.user)
+        location = unit.get_lastlocation()
+
+        try:
+            return HttpResponse(content=json.dumps({
+                'longitude': location.longitude,
+                'latitude': location.latitude,
+                'name': location.unit.name,
+            }), content_type='application/json')
+        except:
+            return HttpResponseBadRequest(content=json.dumps({
+                'status': 'error',
+                'reason': 'no options enough to complete query'
+            }), content_type='application/json')
 
 
 @login_required
