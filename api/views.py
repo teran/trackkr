@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import timesince
@@ -58,4 +58,37 @@ def location(request):
                 'latitude': None,
                 'name': unit.name,
                 'timestamp': None
+            }), content_type='application/json')
+
+
+def add_unit(request):
+    try:
+        imei = request.POST['imei']
+        name = request.POST['name']
+    except:
+        return HttpResponseBadRequest(content=json.dumps({
+            'status': 'error',
+            'reason': 'Both of imei and name are required'
+        }), content_type='application/json')
+
+    try:
+        unit = Unit.objects.get(imei=imei, user=request.user)
+        return HttpResponse(content=json.dumps({
+            'status': 'error',
+            'reasong': 'Unit witch such IMEI already exists'
+        }), content_type='application/json')
+    except:
+        try:
+            unit = Unit()
+            unit.name = name
+            unit.imei = imei
+            unit.user = request.user
+            unit.save()
+            return HttpResponse(content=json.dumps({
+                'status': 'ok'
+            }), content_type='application/json')
+        except:
+            return HttpResponseServerError(content=json.dumps({
+                'status': 'error',
+                'reason': 'Error occured while saving the unit'
             }), content_type='application/json')
