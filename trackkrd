@@ -58,75 +58,110 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
                 self.unknown()
 
     def logon(self, data):
-        logger.info('%s logon message accepted: IMEI=%s' % (self.client, data['imei']))
+        logger.info('%s LOGON request: IMEI=%s' % (self.client, data['imei']))
         try:
             u = Unit.objects.get(imei=data['imei'])
         except:
-            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            logger.error('%s Unauthorized IMEI: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
-        m = Message(
-            latitude=None,
-            longitude=None,
-            message_type=1,
-            unit=u
-        )
-        m.save()
-        self.reply('LOAD')
+        try:
+            m = Message(
+                latitude=None,
+                longitude=None,
+                message_type=1,
+                unit=u
+            )
+            m.save()
+            logger.debug('%s LOGON message successfully stored: latitude=None, longitude=None, message_type=1, unit=%s'
+                         % (self.client, u))
+            self.reply('LOAD')
+        except:
+            logger.error('%s Unable to store LOGON message: latitude=None, longitude=None, message_type=1, unit=%s'
+                         % (self.client, u))
+            self.reply('ERROR')
 
     def heartbeat(self, data):
-        logger.info('%s heartbeat request accepted: IMEI=%s' % (self.client, data['imei']))
+        logger.info('%s HEARTBEAT request: IMEI=%s' % (self.client, data['imei']))
         try:
             u = Unit.objects.get(imei=data['imei'])
         except:
-            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            logger.error('%s Unauthorized IMEI: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
-        m = Message(
-            latitude=None,
-            longitude=None,
-            message_type=2,
-            unit=u
-        )
-        m.save()
-        self.reply('ON')
+        try:
+            m = Message(
+                latitude=None,
+                longitude=None,
+                message_type=2,
+                unit=u
+            )
+            m.save()
+            logger.debug('%s HEARTBEAT message successfully stored: latitude=None, longitude=None, message_type=2, unit=%s'
+                         % (self.client, u))
+            self.reply('ON')
+        except:
+            logger.error('%s Unable to store HEARTBEAT message: latitude=None, longitude=None, message_type=2, unit=%s'
+                         % (self.client, u))
+            self.reply('ERROR')
 
     def low_battery(self, data):
-        logger.info('%s low battery message accepted: IMEI=%s' % (self.client, data['imei']))
-        u = Unit.objects.filter(imei=data['imei'])
-        if u.count() == 0:
-            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
-            self.reply('NOAUTH')
-            return
-
-        m = Message(
-            latitude=self.location(data['latitude'], data['latitude_zoning']),
-            longitude=self.location(data['longitude'], data['longitude_zoning']),
-            message_type=3,
-            unit=u
-        )
-        m.save()
-        self.reply('OK')
-
-    def sos(self, data):
-        logger.info('%s sos message accepted: IMEI=%s' % (self.client, data['imei']))
+        logger.info('%s LOW BATTERY request: IMEI=%s' % (self.client, data['imei']))
         try:
             u = Unit.objects.get(imei=data['imei'])
         except:
-            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            logger.error('%s Unauthorized IMEI: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
-        m = Message(
-            latitude=self.location(data['latitude'], data['latitude_zoning']),
-            longitude=self.location(data['longitude'], data['longitude_zoning']),
-            message_type=4,
-            unit=u
-        )
-        m.save()
-        self.reply('OK')
+        latitude = self.location(data['latitude'], data['latitude_zoning'])
+        longitude = self.location(data['longitude'], data['longitude_zoning'])
+
+        try:
+            m = Message(
+                latitude=latitude,
+                longitude=longitude,
+                message_type=3,
+                unit=u
+            )
+            m.save()
+            logger.debug('%s LOW BATTERY message successfully stored: latitude=%s, longitude=%s, message_type=3, unit=%s'
+                         % (self.client, latitude, longitude, u))
+            self.reply('OK')
+        except:
+            logger.error('%s Unable to store LOW BATTERY message: latitude=%s, longitude=%s, message_type=3, unit=%s'
+                         % (self.client, latitude, longitude, u))
+            self.reply('ERROR')
+
+    def sos(self, data):
+        logger.info('%s SOS request: IMEI=%s' % (self.client, data['imei']))
+        try:
+            u = Unit.objects.get(imei=data['imei'])
+        except:
+            logger.error('%s Unauthorized IMEI: %s' % (self.client, data['imei']))
+            self.reply('NOAUTH')
+            return
+
+        latitude = self.location(data['latitude'], data['latitude_zoning'])
+        longitude = self.location(data['longitude'], data['longitude_zoning'])
+
+        try:
+            m = Message(
+                latitude=latitude,
+                longitude=longitude,
+                message_type=4,
+                unit=u
+            )
+            m.save()
+            logger.debug('%s SOS message successfully stored: latitude=%s, longitude=%s, message_type=4, unit=%s'
+                         % (self.client, latitude, longitude, u))
+            self.reply('OK')
+        except:
+            logger.error('%s Unable to store SOS message: latitude=%s, longitude=%s, message_type=4, unit=%s'
+                         % (self.client, latitude, longitude, u))
+            self.reply('ERROR')
 
     def geo_fence(self):
         logger.info('%s geo-fence message accepted: IMEI=%s' % (self.client, data['imei']))
@@ -138,22 +173,29 @@ class GPSRequestHandler(SocketServer.BaseRequestHandler):
         logger.info('%s over speed message accepted: IMEI=%s' % (self.client, data['imei']))
 
     def tracker(self, data):
-        logger.info('%s tracker message accepted: IMEI=%s' % (self.client, data['imei']))
+        logger.info('%s TRACKER request: IMEI=%s' % (self.client, data['imei']))
         try:
             u = Unit.objects.get(imei=data['imei'])
         except:
-            logger.error('%s message with no existent imei: %s' % (self.client, data['imei']))
+            logger.error('%s Unauthorized IMEI: %s' % (self.client, data['imei']))
             self.reply('NOAUTH')
             return
 
-        m = Message(
-            latitude=self.location(data['latitude'], data['latitude_zoning']),
-            longitude=self.location(data['longitude'], data['longitude_zoning']),
-            message_type=5,
-            unit=u
-        )
-        m.save()
-        self.reply('OK')
+        try:
+            m = Message(
+                latitude=latitude,
+                longitude=longitude,
+                message_type=5,
+                unit=u
+            )
+            m.save()
+            logger.debug('%s TRACKER message successfully stored: latitude=%s, longitude=%s, message_type=5, unit=%s'
+                         % (self.client, latitude, longitude, u))
+            self.reply('OK')
+        except:
+            logger.error('%s Unable to store TRACKER message: latitude=%s, longitude=%s, message_type=5, unit=%s'
+                         % (self.client, latitude, longitude, u))
+            self.reply('ERROR')
 
     def unknown(self):
         if(len(self.data) > 0):
