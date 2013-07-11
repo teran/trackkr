@@ -25,7 +25,7 @@ $('document').ready(function() {
             .done(function() {
                 $('.notifications')
                     .removeClass('alert alert-error alert-success')
-                    .addClass('alert alert-error')
+                    .addClass('alert alert-success')
                     .html('Unit successfully added');
             })
             .fail(function(jqxhr, textStatus, error) {
