@@ -21,7 +21,7 @@ $('document').ready(function() {
             return;
         }
 
-        $.post('/api/unit/add.json', 'name='+name+'&imei='+imei+'&csrfmiddlewaretoken='+csrf_token)
+        $.post('/api/units/add.json', 'name='+name+'&imei='+imei+'&csrfmiddlewaretoken='+csrf_token)
             .done(function() {
                 $('.notifications')
                     .removeClass('alert alert-error alert-success')
