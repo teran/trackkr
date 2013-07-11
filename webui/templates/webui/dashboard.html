@@ -9,27 +9,7 @@
             <div class="dashboard">
 {% include 'webui/units/quick-add-form.html' %}
                 <div class="units-list">
-                    <table class="table table-striped">
-                        <tr>
-                            <td>{% trans '#' %}</td>
-                            <td>{% trans 'Unit name' %}</td>
-                            <td>{% trans 'Unit IMEI' %}</td>
-                            <td>{% trans 'Unit last location' %}</td>
-                            <td>{% trans 'Last seen' %}</td>
-                        </tr>
-                        {% for unit in units %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><a href="/units/{{ unit.imei }}.html">{{ unit.name }}</a></td>
-                            <td>{{ unit.imei }}</td>
-                            <td>{{ unit.get_lastlocation.position }}</td>
-                            <td>{{ unit.get_lastseen|timesince }} {% trans 'ago' %}</td>
-                        </tr>
-                        {% endfor %}
-                        <tr>
-                            <td colspan="6"><center><a href="/units.html">...</a></center></td>
-                        </tr>
-                    </table>
+{% include 'webui/units/units-list.html' %}
                 </div>
                 <div class="last-location">
                     <div id="dashboard-map" class="dashboard-map span11"></div>
