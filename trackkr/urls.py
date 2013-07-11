@@ -8,6 +8,7 @@ urlpatterns = patterns(
     (r'^logout.html$', 'webui.views.log_out'),
 
     (r'^api/location.json$', 'api.views.location'),
+    (r'^api/unit/add.json$', 'api.views.add_unit'),
 
     (r'^units.html$', 'webui.views.units'),
     (r'^units/add.html$', 'webui.views.unit_add'),
