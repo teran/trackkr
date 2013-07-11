@@ -7,15 +7,7 @@
 
 {% block content %}
             <div class="dashboard">
-                <div class="quick-add-unit">
-                    <form action="#" method="post" class="quick-add-unit-form">
-                        {% csrf_token %}
-                        <input type="text" class="quick-add-unit-name" name="name" id="inputName" placeholder="Name" />
-                        <input type="text" class="quick-add-unit-imei" name="imei" id="inputIMEI" placeholder="IMEI" />
-                        <button type="submit" class="btn quick-add-unit-submit">{% trans 'Add' %}</button>
-                    </form>
-                    <div class="quick-add-unit-info"></div>
-                </div>
+{% include 'webui/units/quick-add-form.html' %}
                 <div class="units-list">
                     <table class="table table-striped">
                         <tr>
