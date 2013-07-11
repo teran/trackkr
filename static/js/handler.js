@@ -27,6 +27,9 @@ $('document').ready(function() {
                     .removeClass('alert alert-error alert-success')
                     .addClass('alert alert-success')
                     .html('Unit successfully added');
+                $.get('/api/units/list.html?limit=5&continue=show', function(data) {
+                    $('.units-list').html(data);
+                })
             })
             .fail(function(jqxhr, textStatus, error) {
                 $('.notifications')

@@ -11,7 +11,7 @@ def dashboard(request):
     units = Unit.objects.all()[:5]
 
     return render_to_response('webui/dashboard.html',
-                              {'units': units, 'category': 'dashboard'},
+                              {'units': units, 'category': 'dashboard', 'cont_link': True},
                               context_instance=RequestContext(request))
 
 
