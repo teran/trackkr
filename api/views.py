@@ -2,7 +2,8 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import Http404, HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpResponseServerError
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import timesince
