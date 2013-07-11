@@ -1,7 +1,7 @@
 trackkr
 =======
 
-django based service for locating gps units
+django based service for locating gps units licenced under GPLv2
 
 
 Project status
