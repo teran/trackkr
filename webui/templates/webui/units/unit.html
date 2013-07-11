@@ -35,33 +35,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<table class="table table-striped">
-                        <tr>
-                            <td>{% trans '#' %}</td>
-                            <td>{% trans 'Timestamp' %}</td>
-                            <td>{% trans 'Coordinates' %}</td>
-                            <td>{% trans 'Address' %}</td>
-                        </tr>
-                        {% for message in messages %}
-                        <!--<tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ message.timestamp }}</td>
-                            <td>{% if message.longitude and message.latitude %}<a href="http://geocode-maps.yandex.ru/1.x/?geocode={{ message.longitude }},%20{{ message.latitude }}&format=json">{{ message.longitude }}, {{ message.latitude }}</a>{% else %}N/A{% endif %}</td>
-                            <td id="message_{{ message.id }}">
-                                {% if message.longitude and message.latitude %}
-                                <script>
-                                    $.getJSON('http://geocode-maps.yandex.ru/1.x/?geocode={{ message.longitude }},%20{{ message.latitude }}&format=json')
-                                        .done(function(data){
-                                            $.('#message_{{ message.id }}').html('lol');
-                                            // data.response.GeoObjectCollection.featureMember[0].GeoObject.metaDataProperty.GeocoderMetaData.text
-                                        });
-                                </script>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        
-                    </table>-->
                 </div>    
             </div>
 {% endblock %}
