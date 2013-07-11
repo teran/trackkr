@@ -120,7 +120,7 @@ def unit(request, imei):
 
 @login_required
 def units(request):
-    units = Unit.objects.all()
+    units = Unit.objects.filter(user=request.user)
     return render_to_response('webui/units.html',
                               {'units': units, 'category': 'units'},
                               context_instance=RequestContext(request))
