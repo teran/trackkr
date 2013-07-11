@@ -9,7 +9,7 @@ class Unit(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
-    user = models.ManyToManyField(User, related_name='units')
+    user = models.ForeignKey(User, related_name='units')
 
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.imei)

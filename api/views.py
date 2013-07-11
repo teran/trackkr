@@ -79,10 +79,7 @@ def add_unit(request):
         }), content_type='application/json')
     except:
         try:
-            unit = Unit()
-            unit.name = name
-            unit.imei = imei
-            unit.user = request.user
+            unit = Unit(name=name, imei=imei, user=request.user)
             unit.save()
             return HttpResponse(content=json.dumps({
                 'status': 'ok'
