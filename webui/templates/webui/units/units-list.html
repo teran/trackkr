@@ -12,8 +12,8 @@
                             <td>{{ forloop.counter }}</td>
                             <td><a href="/units/{{ unit.imei }}.html">{{ unit.name }}</a></td>
                             <td>{{ unit.imei }}</td>
-                            <td>{{ unit.get_lastlocation.position }}</td>
-                            <td>{{ unit.get_lastseen|timesince }} {% trans 'ago' %}</td>
+                            <td>{% if unit.get_lastlocation.position %}{{ unit.get_lastlocation.position }}{% else %}N/A{% endif %}</td>
+                            <td>{% if unit.get_lastseen %}{{ unit.get_lastseen|timesince }} {% trans 'ago' %}{% else %}{% trans 'Never' %}{% endif %}</td>
                         </tr>
                         {% endfor %}
                         {% if category == 'dashboard' %}
