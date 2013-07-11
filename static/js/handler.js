@@ -21,12 +21,15 @@ $('document').ready(function() {
             return;
         }
 
-        $.post('/api/unit/add.json', 'name='+name+'&imei='+imei+'&csrfmiddlewaretoken='+csrf_token)
+        $.post('/api/units/add.json', 'name='+name+'&imei='+imei+'&csrfmiddlewaretoken='+csrf_token)
             .done(function() {
                 $('.notifications')
                     .removeClass('alert alert-error alert-success')
                     .addClass('alert alert-success')
                     .html('Unit successfully added');
+                $.get('/api/units/list.html?limit=5&continue=show', function(data) {
+                    $('.units-list').html(data);
+                })
             })
             .fail(function(jqxhr, textStatus, error) {
                 $('.notifications')

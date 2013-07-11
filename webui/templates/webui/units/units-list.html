@@ -16,7 +16,7 @@
                             <td>{% if unit.get_lastseen %}{{ unit.get_lastseen|timesince }} {% trans 'ago' %}{% else %}{% trans 'Never' %}{% endif %}</td>
                         </tr>
                         {% endfor %}
-                        {% if category == 'dashboard' %}
+                        {% if cont_link %}
                         <tr>
                             <td colspan="6"><center><a href="/units.html">...</a></center></td>
                         </tr>

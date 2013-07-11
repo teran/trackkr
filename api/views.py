@@ -4,11 +4,29 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
 from django.http import HttpResponseServerError
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import timesince
 
 from core.models import Unit, Message
+
+
+@login_required
+def list(request):
+    try:
+        limit = int(request.GET['limit'])
+    except:
+        limit = 5
+
+    try:
+        cont_link = bool(request.GET['continue'])
+    except:
+        cont_link = True
+
+    units = Unit.objects.filter(user=request.user)[:limit]
+    return render_to_response('webui/units/units-list.html',
+                              {'units': units, 'cont_link': cont_link},
+                              context_instance=RequestContext(request))
 
 
 @login_required
