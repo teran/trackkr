@@ -114,3 +114,38 @@ def add_unit(request):
             'status': 'error',
             'reason': 'not authenticated'
         }), content_type='application/json')
+
+
+def delete_unit(request):
+    try:
+        imei = int(request.POST['imei'])
+    except:
+        return HttpResponseBadRequest(content=json.dumps({
+            'status': 'error',
+            'reason': 'imei POST option is required'
+        }), content_type='application/json')
+
+    if request.user.is_authenticated:
+        try:
+            unit = Unit.objects.get(imei=imei, user=request.user)
+        except:
+            return HttpResponseNotFound(content=json.dumps({
+                'status': 'error',
+                'reason': 'object not found'
+            }), content_type='application/json')
+
+        try:
+            messages = Message.objects.filter(unit=unit).delete()
+        except:
+            pass
+
+        unit.delete()
+
+        return HttpResponse(content=json.dumps({
+            'status': 'ok'
+        }))
+    else:
+        return HttpResponseForbidden(content=json.dumps({
+            'status': 'error',
+            'reason': 'not authenticated'
+        }), content_type='application/json')
