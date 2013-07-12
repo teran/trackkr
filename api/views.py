@@ -80,7 +80,6 @@ def location(request):
             }), content_type='application/json')
 
 
-@login_required
 def add_unit(request):
     try:
         imei = request.POST['imei']
