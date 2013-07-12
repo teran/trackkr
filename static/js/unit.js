@@ -27,7 +27,7 @@ $('document').ready(function(){
                 $('.notifications')
                     .removeClass('alert alert-error alert-success')
                     .addClass('alert alert-error')
-                    .html('jQXHR query error occured');
+                    .html('Error obtaining location for unit');
             });
 
         $('.unit-location-link').click(function(event) {
@@ -70,7 +70,7 @@ $('document').ready(function(){
                     $('.notifications')
                         .removeClass('alert alert-error alert-success')
                         .addClass('alert alert-error')
-                        .html('jQXHR query error occured');
+                        .html('Error obtaining location for unit');
                 });
         });
     });
