@@ -7,6 +7,8 @@ from django.http import HttpResponseServerError
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.template.defaultfilters import timesince
+from django.views.decorators.csrf import csrf_exempt
+
 
 from core.models import Unit, Message
 
@@ -23,9 +25,14 @@ def list(request):
     except:
         cont_link = True
 
+    try:
+        verbose = bool(request.GET['verbose'])
+    except:
+        verbose = False
+
     units = Unit.objects.filter(user=request.user)[:limit]
     return render_to_response('webui/units/units-list.html',
-                              {'units': units, 'cont_link': cont_link},
+                              {'units': units, 'cont_link': cont_link, 'verbose': verbose},
                               context_instance=RequestContext(request))
 
 
@@ -149,3 +156,56 @@ def delete_unit(request):
             'status': 'error',
             'reason': 'not authenticated'
         }), content_type='application/json')
+
+
+@csrf_exempt
+def checkin(request):
+    try:
+        imei = int(request.POST['imei'])
+        mtype = str(request.POST['type'])
+    except:
+        return HttpResponseBadRequest(content=json.dumps({
+            'status': 'error',
+            'reason': 'all of imei, type, latitude and longitude POST options are required'
+        }), content_type='application/json')
+
+    try:
+        latitude = float(request.POST['latitude'])
+        longitude = float(request.POST['longitude'])
+    except:
+        latitude = None
+        longitude = None
+
+    if mtype not in ('logon', 'heartbeat', 'low_battery', 'sos', 'tracker'):
+        return HttpResponseBadRequest(content=json.dumps({
+            'status': 'error',
+            'reason': 'allowed values for type: logon, heartbeat, low_battery, sos, tracker'
+        }), content_type='application/json')
+
+    try:
+        u = Unit.objects.get(imei=imei)
+    except:
+        return HttpResponseNotFound(content=json.dumps({
+            'status': 'error',
+            'reason': 'unit not found'
+        }))
+
+    MESSAGE_TYPES = {
+        'logon': 1,
+        'heartbeat': 2,
+        'low_battery': 3,
+        'sos': 4,
+        'tracker': 5
+    }
+
+    m = Message(
+        message_type=MESSAGE_TYPES[mtype],
+        latitude=latitude,
+        longitude=longitude,
+        unit=u
+    )
+    m.save()
+
+    return HttpResponse(content=json.dumps({
+        'status': 'ok'
+    }), content_type='application/json')
