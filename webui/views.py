@@ -122,5 +122,5 @@ def unit(request, imei):
 def units(request):
     units = Unit.objects.filter(user=request.user)
     return render_to_response('webui/units.html',
-                              {'units': units, 'category': 'units'},
+                              {'units': units, 'category': 'units', 'verbose': True},
                               context_instance=RequestContext(request))

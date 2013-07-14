@@ -6,6 +6,7 @@
                             <td>{% trans 'Unit IMEI' %}</td>
                             <td>{% trans 'Unit last location' %}</td>
                             <td>{% trans 'Last seen' %}</td>
+                            {% if verbose %}<td>{% trans 'Actions' %}</td>{% endif %}
                         </tr>
                         {% for unit in units %}
                         <tr>
@@ -14,6 +15,7 @@
                             <td>{{ unit.imei }}</td>
                             <td>{% if unit.get_lastlocation.position %}{{ unit.get_lastlocation.position }}{% else %}N/A{% endif %}</td>
                             <td>{% if unit.get_lastseen %}{{ unit.get_lastseen|timesince }} {% trans 'ago' %}{% else %}{% trans 'Never' %}{% endif %}</td>
+                            {% if verbose %}<td><a class="btn unit-delete-button" value="{{ unit.imei }}">{% trans 'Delete' %}</a></td>{% endif %}
                         </tr>
                         {% endfor %}
                         {% if cont_link %}
