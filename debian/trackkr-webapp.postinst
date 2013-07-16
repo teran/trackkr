@@ -1,5 +1,7 @@
 #!/bin/sh
 
+/usr/sbin/useradd --system --home=/usr/share/trackkr --shell=/bin/nologin trackkr
+
 ln -s /etc/nginx/sites-available/trackkr.conf /etc/nginx/sites-enabled/
 
 invoke-rc.d trackkr.webapp restart
