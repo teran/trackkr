@@ -1,3 +1,5 @@
 #!/bin/sh
 
+rm -vf /etc/nginx/sites-enabled/trackkr.conf
+
 invoke-rc.d trackkr.trackkrd stop

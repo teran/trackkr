@@ -1,4 +1,6 @@
 #!/bin/sh
 
+rm -vf /etc/nginx/sites-enabled/trackkr.conf
+
 invoke-rc.d trackkr.webapp stop
 invoke-rc.d nginx restart
