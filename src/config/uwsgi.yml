@@ -11,5 +11,5 @@ uwsgi:
     enable-threads: 1
     buffer-size: 65536
 
-    chdir: /usr/share/trackkr
+    chdir: /usr/share/trackkr/webapp
     module: trackkr-uwsgi

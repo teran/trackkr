@@ -1,0 +1,5 @@
+/etc/init.d
+/etc/trackkr
+/etc/ubic/service/trackkr
+/usr/share/trackkr
+/var/log/trackkr

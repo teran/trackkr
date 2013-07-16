@@ -1,0 +1,5 @@
+src/config/uwsgi.yml				/etc/trackkr/
+src/config/trackkr.conf				/etc/nginx/sites-available/
+src/ubic/trackkr/webapp				/etc/ubic/service/trackkr/
+src/ubic/init.d/trackkr.webapp		/etc/init.d/
+src/webapp							/usr/share/trackkr/
