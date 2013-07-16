@@ -5,12 +5,12 @@ from django.contrib.auth.models import User
 class Unit(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
-    imei = models.CharField(max_length=128, unique=True)
+    imei = models.CharField(max_length=128, unique=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
-    user = models.ForeignKey(User, related_name='units')
-    skip_empty_messages = models.BooleanField(default=False)
+    user = models.ForeignKey(User, related_name='units', db_index=True)
+    skip_empty_messages = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.imei)
@@ -37,9 +37,9 @@ class Message(models.Model):
         (5, 'tracker'))
 
     timestamp = models.DateTimeField(auto_now_add=True)
-    unit = models.ForeignKey(Unit, related_name='messages')
-    longitude = models.FloatField(blank=True, null=True)
-    latitude = models.FloatField(blank=True, null=True)
+    unit = models.ForeignKey(Unit, related_name='messages', db_index=True)
+    longitude = models.FloatField(blank=True, null=True, db_index=True)
+    latitude = models.FloatField(blank=True, null=True, db_index=True)
     message_type = models.IntegerField(max_length=2,
                                        choices=MESSAGE_TYPES)
 
