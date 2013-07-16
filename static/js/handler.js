@@ -72,4 +72,33 @@ $('document').ready(function() {
                     .html('Error deleting unit');
             });
     });
+    $('.unit-preferences-save-button').click(function(event) {
+        event.preventDefault();
+
+        var imei = $(this).attr('value');
+        var csrftoken = $.cookie('csrftoken');
+
+        
+        var skip_empty_messages = 0;
+        if($('.skip-empty-messages-checkbox').is(':checked')) {
+            skip_empty_messages = 1;
+        }
+        
+        var description = $('.unit-description-textarea').val();
+
+        $.post('/api/units/preferences.json?imei='+imei,
+               'skip_empty_messages='+skip_empty_messages+'&description='+description+'&csrfmiddlewaretoken='+csrftoken)
+            .done(function() {
+                $('.notifications')
+                    .removeClass('alert alert-error alert-success')
+                    .addClass('alert alert-success')
+                    .html('Preferences successfully saved');
+            })
+            .fail(function(jqxhr, textStatus, error) {
+                $('.notifications')
+                    .removeClass('alert alert-error alert-success')
+                    .addClass('alert alert-error')
+                    .html('Error saving preferences');
+            });
+    });
 });

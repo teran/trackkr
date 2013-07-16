@@ -12,6 +12,7 @@ urlpatterns = patterns(
     (r'^api/units/add.json$', 'api.views.add_unit'),
     (r'^api/units/delete.json$', 'api.views.delete_unit'),
     (r'^api/units/list.html$', 'api.views.list'),
+    (r'^api/units/preferences.json$', 'api.views.preferences'),
 
     (r'^units.html$', 'webui.views.units'),
     (r'^units/add.html$', 'webui.views.unit_add'),

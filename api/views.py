@@ -209,3 +209,54 @@ def checkin(request):
     return HttpResponse(content=json.dumps({
         'status': 'ok'
     }), content_type='application/json')
+
+
+@login_required
+def preferences(request):
+    try:
+        imei = request.GET['imei']
+    except:
+        return HttpResponseBadRequest(content=json.dumps({
+            'status': 'error',
+            'reason': 'imei GET parameter is required'
+        }), content_type='application/json')
+
+    try:
+        u = Unit.objects.get(imei=imei, user=request.user)
+    except:
+        return HttpResponseNotFound(content=json.dumps({
+            'status': 'error',
+            'reason': 'not found unit with such imei'
+        }), content_type='application/json')
+
+    if request.method == 'POST':
+        try:
+            skip_empty_messages = bool(int(request.POST['skip_empty_messages']))
+        except:
+            skip_empty_messages = False
+
+        try:
+            description = request.POST['description']
+        except:
+            description = ''
+
+        try:
+            u.skip_empty_messages = skip_empty_messages
+            u.description = description
+            u.save()
+
+            return HttpResponse(content=json.dumps({
+                'status': 'ok'
+            }), content_type='application/json')
+        except:
+            return HttpResponseServerError(content=json.dumps({
+                'status': 'error',
+                'reason': 'error while saving unit preferences'
+            }), content_type='application/json')
+    else:
+        return HttpResponse(content=json.dumps({
+            'imei': u.imei,
+            'name': u.name,
+            'skip_empty_messages': u.skip_empty_messages,
+            'description': u.description
+        }), content_type='application/json')
