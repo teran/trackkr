@@ -21,10 +21,19 @@
 .unit-add {
     padding: 300px;
 }
+.unit-description-textarea {
+    height: 100px;
+    width: 300px;
+}
+.unit-info {
+    padding: 30px;
+}
+.unit-meta {
+    
+}
 .unit-map {
     height: 900px;
     width: 100%;
-    /*border: 1px dotted #cccccc;*/
 }
 .units-list { }
 .quick-add-unit input {

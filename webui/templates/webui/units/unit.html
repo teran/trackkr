@@ -5,13 +5,44 @@
 
 {% block content %}
             <div class="units-list">
-                <div class="unit-info">
-                    <p>
-                        <strong>IMEI:</strong> <span class="unit-imei">{{ unit.imei }}</span>
-                    </p>
-                    <p>
-                        <strong>Name:</strong> <span class="unit-name">{{ unit.name }}</span>
-                    </p>
+                <div id="confirm-delete-modal-{{ unit.imei }}" class="modal hide fade">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3>{% trans 'Delete confirmation' %}</h3>
+                    </div>
+                    <div class="modal-body">
+                        {% blocktrans with name=unit.name imei=unit.imei %}You're going to delete unit {{ name }}(IMEI {{ imei }}).
+                        This operation cannot be undone. Are you sure?{% endblocktrans %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Leave it' %}</button>
+                        <a href="#" class="btn btn-danger unit-delete-button-confirm" value="{{ unit.imei }}">{% trans 'Delete unit' %}</a>
+                    </div>
+                </div>
+                <div class="row unit-info">
+                    <div class="span4 unit-general-info">
+                        <p>
+                            <strong>IMEI:</strong> <span class="unit-imei">{{ unit.imei }}</span>
+                        </p>
+                        <p>
+                            <strong>Name:</strong> <span class="unit-name">{{ unit.name }}</span>
+                        </p>
+                        <p>
+                            <label class="checkbox skip-empty-messages">
+                                <input type="checkbox" class="skip-empty-messages-checkbox"{% if unit.skip_empty_messages %} checked="checked" {% endif %}/>
+                                <strong>Skip empty messages</strong>
+                            </label>
+                        </p>
+                        <p>
+                            <a href="#" class="btn btn-success unit-preferences-save-button" value="{{ unit.imei }}">{% trans 'Save' %}</a>
+                            <a href="#" class="btn btn-danger unit-delete-button" value="{{ unit.imei }}">{% trans 'Delete unit' %}</a>
+                        </p>
+                    </div>
+                    <div class="span4 unit-meta-info">
+                        <p>
+                            <textarea class="unit-description-textarea" placeholder="{% trans 'Description' %}">{{ unit.description }}</textarea>
+                        </p>
+                    </div>
                 </div>
                 <div class="unit-locations">
                     <div class="tabbable tabs-left">
@@ -34,5 +65,5 @@
 {% block postjavascripts %}
         <script src="{% static 'js/unit.js' %}"></script>
         <script src="{% static 'js/handler.js' %}"></script>
-        <script src="//api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>
+        <script src="//api-maps.yandex.ru/2.0-stable/?load=package.full&lang=en-US"></script>
 {% endblock %}

@@ -10,6 +10,7 @@ class Unit(models.Model):
     modified = models.DateTimeField(auto_now=True)
     active = models.BooleanField(default=True)
     user = models.ForeignKey(User, related_name='units')
+    skip_empty_messages = models.BooleanField(default=False)
 
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.imei)

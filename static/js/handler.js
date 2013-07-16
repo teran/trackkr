@@ -47,27 +47,23 @@ $('document').ready(function() {
                     .html('Error adding unit');
             });
     });
-    $('.unit-delete-button').click(function() {
+    $('.unit-delete-button').click(function(event) {
+        event.preventDefault();
+
+        var imei = $(this).attr('value');
+        var csrftoken = $.cookie('csrftoken');
+        
+        $('#confirm-delete-modal-'+imei).modal('show');
+    });
+    $('.unit-delete-button-confirm').click(function(event) {
+        event.preventDefault();
+
         var imei = $(this).attr('value');
         var csrftoken = $.cookie('csrftoken');
         
         $.post('/api/units/delete.json', 'imei='+imei+'&csrfmiddlewaretoken='+csrftoken)
             .done(function() {
-                $('.notifications')
-                    .removeClass('alert alert-error alert-success')
-                    .addClass('alert alert-success')
-                    .html('Unit successfully deleted');
-
-                $.get('/api/units/list.html?limit=5&continue=show&verbose=true')
-                    .done(function(data) {
-                        $('.units-list').html(data);
-                    })
-                    .fail(function(jqxhr, textStatus, error) {
-                        $('.notifications')
-                            .removeClass('alert alert-error alert-success')
-                            .addClass('alert alert-error')
-                            .html('Error reloading units list');
-                    });
+                $(location).attr('href', '/units.html');
             })
             .fail(function(jqxhr, textStatus, error) {
                 $('.notifications')

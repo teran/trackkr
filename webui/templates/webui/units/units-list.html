@@ -15,7 +15,25 @@
                             <td>{{ unit.imei }}</td>
                             <td>{% if unit.get_lastlocation.position %}{{ unit.get_lastlocation.position }}{% else %}N/A{% endif %}</td>
                             <td>{% if unit.get_lastseen %}{{ unit.get_lastseen|timesince }} {% trans 'ago' %}{% else %}{% trans 'Never' %}{% endif %}</td>
-                            {% if verbose %}<td><a class="btn unit-delete-button" value="{{ unit.imei }}">{% trans 'Delete' %}</a></td>{% endif %}
+                            {% if verbose %}
+                            <td>
+                                <a class="btn unit-delete-button" value="{{ unit.imei }}">{% trans 'Delete' %}</a>
+                                <div id="confirm-delete-modal-{{ unit.imei }}" class="modal hide fade">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h3>{% trans 'Delete confirmation' %}</h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% blocktrans with name=unit.name imei=unit.imei %}You're going to delete unit {{ name }}(IMEI {{ imei }}).
+                                        This operation cannot be undone. Are you sure?{% endblocktrans %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">{% trans 'Leave it' %}</button>
+                                        <a href="#" class="btn btn-danger unit-delete-button-confirm" value="{{ unit.imei }}">{% trans 'Delete unit' %}</a>
+                                    </div>
+                                </div>
+                            </td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                         {% if cont_link %}
