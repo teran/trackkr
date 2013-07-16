@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Ubic::Service::SimpleDaemon;
+
+my $LOGDIR = '/var/log/trackkr';
+
+Ubic::Service::SimpleDaemon->new({
+    bin      => "/usr/bin/uwsgi -y /etc/trackkr/uwsgi.yml",
+    stdout   => "$LOGDIR/restart.log",
+    stderr   => "$LOGDIR/restart.log",
+    ubic_log => "$LOGDIR/ubic.log",
+    user     => "trackkr",
+});

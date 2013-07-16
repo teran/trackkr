@@ -1,0 +1,15 @@
+uwsgi:
+    plugins: python
+    workers: 12
+    uid: rtyctl
+    gid: rtyctl
+    socket: 127.0.0.1:8725
+    listen: 1000
+    chmod: 666
+    master: 1
+    vacuum: 1
+    enable-threads: 1
+    buffer-size: 65536
+
+    chdir: /usr/share/trackkr
+    module: trackkr-uwsgi
