@@ -4,5 +4,7 @@
 
 ln -s /etc/nginx/sites-available/trackkr.conf /etc/nginx/sites-enabled/
 
+chown -R trackkr:trackkr /var/log/trackkr
+
 invoke-rc.d trackkr.webapp restart
 invoke-rc.d nginx restart

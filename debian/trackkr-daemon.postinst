@@ -2,4 +2,6 @@
 
 /usr/sbin/useradd --system --home=/usr/share/trackkr --shell=/bin/nologin trackkr
 
+chown -R trackkr:trackkr /var/log/trackkr
+
 invoke-rc.d trackkr.trackkrd restart

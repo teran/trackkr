@@ -19,6 +19,6 @@ Package: trackkr-webapp
 Section: extra
 Priority: optional
 Architecture: all
-Depends: nginx, nginx-common, nginx-full, python (>= 2.7), python-minimal (>= 2.7), ubic
+Depends: nginx, nginx-common, nginx-full, python (>= 2.7), python-django (>= 1.4), python-minimal (>= 2.7), ubic, uwsgi, uwsgi-plugin-python
 Description: Trackkr web application
  WebUI and HTTP-API for trackkr
