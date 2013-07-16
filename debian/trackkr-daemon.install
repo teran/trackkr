@@ -1,0 +1,3 @@
+src/ubic/trackkr/trackkrd		    /etc/ubic/service/trackkr/
+src/ubic/init.d/trackkr.trackkrd    /etc/init.d/
+src/daemon/trackkrd				    /usr/sbin/
