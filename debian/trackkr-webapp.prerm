@@ -1,3 +1,4 @@
 #!/bin/sh
 
 invoke-rc.d trackkr.webapp stop
+invoke-rc.d nginx restart
