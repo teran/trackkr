@@ -52,26 +52,28 @@ $('document').ready(function(){
 
             $.getJSON(url)
                 .done(function(data){
-                    unit_map.destroy();
-                    unit_map = new ymaps.Map("unit-map", {
-                        center: [data.latitude, data.longitude],
-                        zoom: 10
-                    });
-    
-                    unit_map.controls
-                        .add('zoomControl', { left: 5, top: 5 })
-                        .add('typeSelector')
-                        .add('mapTools', { left: 35, top: 5 });
-    
-                    unit_map.geoObjects.add(
-                        new ymaps.Placemark(
-                            [data.latitude, data.longitude], {
-                                balloonContentHeader: data.name,
-                                balloonContentBody: data.timestamp
-                            }
-                        ));
-                    $('.message-tab-each').removeClass('active');
-                    $('.message-tab-'+pk).addClass('active');
+                    if(data.latitude && data.longitude) {
+                        unit_map.destroy();
+                        unit_map = new ymaps.Map("unit-map", {
+                            center: [data.latitude, data.longitude],
+                            zoom: 10
+                        });
+        
+                        unit_map.controls
+                            .add('zoomControl', { left: 5, top: 5 })
+                            .add('typeSelector')
+                            .add('mapTools', { left: 35, top: 5 });
+        
+                        unit_map.geoObjects.add(
+                            new ymaps.Placemark(
+                                [data.latitude, data.longitude], {
+                                    balloonContentHeader: data.name,
+                                    balloonContentBody: data.timestamp
+                                }
+                            ));
+                        $('.message-tab-each').removeClass('active');
+                        $('.message-tab-'+pk).addClass('active');
+                    }
                 })
                 .fail(function(jqxhr, textStatus, error) {
                     $('.notifications')
