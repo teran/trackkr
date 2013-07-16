@@ -1,0 +1,24 @@
+Source: trackkr
+Section: extra
+Priority: optional
+Maintainer: Igor Shishkin <me@teran.ru>
+Vcs-Git: ssh://git@github.com/teran/trackkr.git
+Vcs-Browser: https://github.com/teran/trackkr
+
+
+Package: trackkr-daemon
+Section: extra
+Priority: optional
+Architecture: all
+Depends: python (>= 2.7), python-minimal (>= 2.7), ubic
+Description: Trackkr unit communication daemon
+ Deamon communcates directly to GPS Units
+
+
+Package: trackkr-webapp
+Section: extra
+Priority: optional
+Architecture: all
+Depends: nginx, nginx-common, nginx-full, python (>= 2.7), python-minimal (>= 2.7), ubic
+Description: Trackkr web application
+ WebUI and HTTP-API for trackkr
