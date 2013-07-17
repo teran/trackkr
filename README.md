@@ -9,6 +9,7 @@ Project status
 
 Currently in deep-deep beta
 
+More info about every release can be found at [RELEASE NOTES](wiki/RELEASE_NOTES) page
 
 HOWTO
 =======
